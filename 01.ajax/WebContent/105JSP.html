@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<!-- jQuery Framework -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<!-- ajax 정의 -->
+<script type="text/javascript">
+	$(function(){
+		$("#mybtn").click(function(){
+			$.ajax({
+				url:"ajax/text/textdata.jsp",
+				type:"get",
+				//data:"id=park&password=1234",
+				data:{
+					id:"park1",
+					password:"12345"
+				},
+				dataType:"text",
+				timeout:30000,
+				cache:false,
+				success:function(data){
+					$("#result").html(data);
+				},
+				error : function(xhr,textStatus,errorThrown){
+					$("div").html("<div>"+textStatus+"(HTTP-"+xhr.status+
+							"/"+errorThrown+")</div>")							
+				}
+			})
+		})
+	});
+</script>
+
+</head>
+<body>
+<body>
+	<h1 class="title">$.ajax()함수를 사용한 텍스트 읽기</h1>
+	<div class="exec">
+		<input type="button" value="txt파일 가져오기" id="mybtn"/>
+	</div>
+	<div class="console" id="result"></div>
+</body>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko">
+	<head>
+		<meta charset="utf-8" />
+		
+		<title>json(1)</title>
+
+		<!-- jQuery Framework 참조하기 -->
+		<script type="text/javascript" src="js/jquery-1.11.0.min.js"></script>
+
+		<!-- 사용자 스크립트 블록 -->
+		<script type="text/javascript">
+			$(function() {
+				$("#mybtn").click(function() {
+					$.ajax({
+						url: "ajax/json/04.json",
+						type: "get",
+						dataType: "json",
+						cache: false,
+						timeout: 30000,
+						success: function(json) {
+							// 파라미터로 전달되는 객체는 JSON 자체이다.
+							var title = json.school.subject.title;
+							var time = json.school.subject.time;
+							var teacher = json.school.subject.teacher;
+							
+							/** 요소의 동적 생성 및 데이터 출력 구현 */
+							var ul = $("<div>");
+							var li1 = $("<p>").html(title);
+							var li2 = $("<p>").html(time);
+							var li3 = $("<p>").html(teacher);
+							$("#result").append(ul.append(li1).append(li2).append(li3));
+						},
+						error: function(xhr, textStatus, errorThrown) {
+							$("div").html("<div>" + textStatus + " (HTTP-" + xhr.status + " / " + errorThrown + ")</div>" );
+						}
+					});
+				});
+			});
+		</script>
+
+	</head>
+	<body>
+		<h1 class="title">$.ajax() 함수를 사용한 JSON데이터 읽기 (1)</h1>
+		<div class="exec">
+			<input type="button" value="JSON데이터 가져오기" id="mybtn" />
+		</div>
+		<div class="console" id="result"></div>
+	</body>
+</html>

@@ -1,0 +1,48 @@
+create table bbs
+(boardNum number(9) not null,
+name varchar2(20) not null,
+pwd varchar2(10),
+email varchar2(50),
+subject varchar2(50) not null,
+content varchar2(4000) not null,
+ipAddr varchar2(20) not null,
+groupNum number(9) not null,
+depth number(9) not null,
+orderNo number(9) not null,
+parent number(9) not null,
+hitCount number(9) not null,
+created date,
+constraint pk_board_boardNum primary key(boardNum));
+
+create table ibbs
+(boardNum number(9) not null,
+name varchar2(20) not null,
+subject varchar2(50) not null,
+content varchar2(4000) not null,
+pwd varchar2(10) not null,
+email varchar2(50),
+ipaddr varchar2(20),
+hitcount number(9),
+created date,
+constraint pk_ibbs_boardNum primary key(boardNum));
+
+create table ibbsComment
+(commentNum number(9) not null,
+boardNum number(9) not null,
+name varchar2(20) not null,
+content varchar2(4000) not null,
+ipaddr varchar2(20),
+created date,
+constraint pk_ibbsComment_commentNum primary key(commentNum));
+
+create table fileTest
+(num number(7) primary key,
+subject varchar2(50) not null,
+saveFileName varchar2(50),
+originalFileName varchar2(50));
+
+create table imageTest
+(num number(7) primary key,
+subject varchar2(50) not null,
+saveFileName varchar2(50),
+originalFileName varchar2(50));

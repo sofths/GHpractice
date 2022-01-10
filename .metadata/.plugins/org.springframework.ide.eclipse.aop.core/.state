@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aop-reference-model>
+<aop-project name="memo"/>
+<aop-project name="108security"/>
+<aop-project name="02security"/>
+<aop-project name="01HumanCrud(ajax"/>
+<aop-project name="107security"/>
+<aop-project name="110security"/>
+<aop-project name="103ajax"/>
+<aop-project name="SPTest"/>
+<aop-project name="01HumanCrud"/>
+<aop-project name="109security"/>
+</aop-reference-model>

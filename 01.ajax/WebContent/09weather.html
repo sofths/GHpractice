@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+<script>
+   $(function() {
+      $('#mybtn').click(function() {
+      var cityname=$("input[name='cityname']:checked").val();
+         $.ajax({
+            url : "WeatherServlet",
+            type : "get",
+            data : {"cityname" : cityname},
+            dataType : "xml",
+            timeout : 30000,
+            cache : false,
+            success : function(data) {
+             
+             alert(cityname);
+             var xml=$(data);
+                $(xml).find('location').each(function(){
+              var city=$(this).find('city').text();
+                 if(city==cityname){
+                 var city=$(this).find("city").html(); //도시
+                        var tmEf=$(this).find("tmEf").html(); //날짜
+                        var tmn=$(this).find("tmn").html(); //최저
+                        var tmx=$(this).find("tmx").html(); //최고
+                        var reliability=$(this).find("reliability").html(); //신뢰도
+                        var div=$("<div>");
+                        var p1=$("<p>").html("도시 : " + city);
+                        var p2=$("<p>").html("날짜 : " + tmEf);
+                        var p3=$("<p>").html("최저온도 : " + tmn);
+                        var p4=$("<p>").html("최고기온 : " + tmx);
+                        var p5=$("<p>").html("신뢰도 : " + reliability);
+                        div.append(p1).append(p2).append(p3).append(p4).append(p5); //체이닝 chaining
+                        $(".console").html(div);
+                 }
+                })
+            },
+            error:function(xhr,textStatus){
+               $('.console').html("<div>" + textStatus +"(HTTp-" + xhr.status +")</div>");
+            }
+         })
+      })
+   })
+</script>
+
+</head>
+<body>
+ <div>
+    서울 <input type="radio" value="서울" name="cityname" checked><br>
+    인천 <input type="radio" value="인천" name="cityname"><br>
+    수원 <input type="radio" value="수원" name="cityname"><br>
+    </div>
+   <input type="button" value="시작" id="mybtn" />
+   <div class="console"></div>
+</body>
+</html>

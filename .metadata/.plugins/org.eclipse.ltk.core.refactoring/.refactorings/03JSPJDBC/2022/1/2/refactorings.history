@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy 4 elements to &apos;human&apos;&#x0D;&#x0A;- Original project: &apos;03JSPJDBC&apos;&#x0D;&#x0A;- Destination element: &apos;human&apos;&#x0D;&#x0A;- Original elements:&#x0D;&#x0A;     delete.jsp&#x0D;&#x0A;     insert.jsp&#x0D;&#x0A;     update.jsp&#x0D;&#x0A;     select.jsp" description="Copy files" element1="WebContent/delete.jsp" element2="WebContent/insert.jsp" element3="WebContent/update.jsp" element4="WebContent/select.jsp" files="4" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1641193865616" target="/01HumanTest/src/main/webapp/WEB-INF/views/human" units="0" version="1.0"/>
+</session>

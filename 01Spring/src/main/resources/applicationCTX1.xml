@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+<bean id="calculator" class="com.human.ex4.Calculator"/>
+
+<bean id="myCalculator" class="com.human.ex4.MyCalculator">
+	<property name="calculator">
+		<ref bean="calculator"/>
+	</property>
+	<property name="firstNum" value="20"/>
+	<property name="secondNum" value="13"/>
+</bean>
+
+
+</beans>

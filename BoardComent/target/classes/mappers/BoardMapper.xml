@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.board.dao.BoardDAO">
+
+<select id="maxBoardNum" resultType="int"> 
+	select nvl(max(boardNum),0) from ibbs
+</select>
+
+<insert id="insertData" > 
+	insert into ibbs (boardNum,name,subject,content,pwd,email,hitCount,ipAddr,created) 
+	values (#{boardNum},#{name},#{subject},#{content},#{pwd},#{email},0,#{ipAddr},sysdate) 
+</insert>
+
+<select id="dataCount" resultType="int" parameterType="map"> 
+	select nvl(count(boardNum),0) from ibbs where #{searchKey} like '%' || #{searchValue} || '%' 
+</select>
+
+
+<select id="listData" resultType="BoardDTO" parameterType="map">
+	select * from (
+	select rownum rnum, data.* from ( 
+	select boardNum, name, subject, hitCount, to_char(created,'YYYY-MM-DD') created from ibbs 
+	where #{searchKey} like '%' || #{searchValue} || '%'order by boardNum desc) data) 
+<![CDATA[ 
+	where rnum>= #{start} and rnum<= #{end} 
+]]>
+</select>
+
+<select id="readData" resultType="BoardDTO"> 
+	select boardNum, name, subject, email, pwd, content, ipAddr, hitCount, created 
+	from ibbs where boardNum=#{boardNum} 
+</select>
+
+
+<select id="preReadData" resultType="BoardDTO" parameterType="map">
+	select data.* from (select boardNum, subject from ibbs where #{searchKey} like '%' || #{searchValue} || '%'
+<![CDATA[ 
+	and (boardNum > #{boardNum}) order by boardNum asc) data where rownum=1 
+]]>
+</select>
+
+
+<select id="nextReadData"  resultType="BoardDTO" parameterType="map">
+	select data.* from(select boardNum, subject from ibbs where #{searchKey} like '%' || #{searchValue} || '%'
+<![CDATA[ 
+	and (boardNum < #{boardNum})order by boardNum desc) data where rownum=1 
+]]>
+
+</select>
+
+<update id="hitCountUpdate"> 
+	update ibbs set hitCount=hitCount+1 where boardNum=#{boardNum} 
+</update>
+
+<update id="updateData"> 
+	update ibbs set name=#{name}, subject=#{subject}, email=#{email}, content=#{content}, pwd=#{pwd} 
+	where boardNum=#{boardNum} 
+</update>
+
+<delete id="deleteData"> 
+	delete ibbs where boardNum=#{boardNum} 
+</delete>
+
+
+</mapper>

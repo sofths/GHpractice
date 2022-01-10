@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.human.dao.HumanDAO">
+
+<insert id="insert">
+insert into human (name,age,height,birthday) 
+values (#{name}, #{age},#{height}, #{birthday})
+</insert>
+
+<select id="select" resultType="HumanDTO"> 
+select * from test1
+</select>
+
+<select id="read" resultType="HumanDTO">
+select * from test1 where name=#{name}
+</select>
+
+
+<update id="update">
+update test1 set memo=#{memo} where name=#{name}
+</update>
+
+<delete id="delete">
+delete test1 where name=#{name}
+</delete>
+
+</mapper>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+
+<mapper namespace="com.board.dao.CommentDAO">
+
+<!-- comment 부분 -->
+<select id="commNumMax" resultType="int" > 
+	select nvl(max(commentNum),0) from ibbsComment 
+</select>
+
+<insert id="commInsertData" parameterType="CommentDTO"> 
+	insert into ibbsComment (commentNum,boardNum,name,content,ipAddr,created) 
+	values (#{commentNum},#{boardNum},#{name},#{content},#{ipAddr},sysdate) 
+</insert>
+
+<!-- 전체데이터 수 구하기 -->
+<select id="commDataCount" resultType="int"  parameterType="int"> 
+	select nvl (count(*),0) from ibbsComment where boardNum=#{boardNum}
+</select>
+
+<!-- 전체데이터 검색 -->
+<select id="commListData" resultType="CommentDTO"  parameterType="map">
+	select * from ( 
+	select rownum rnum, data.* from ( 
+	select commentNum, boardNum, name, content,ipAddr, created from ibbsComment 
+	where boardNum=#{boardNum} order by commentNum desc) data) 
+<![CDATA[ 
+	where rnum>= #{start} and rnum<= #{end} 
+]]>
+</select>
+
+<delete id="commDeleteData" parameterType="int"> 
+	delete ibbsComment where commentNum=#{commentNum} 
+</delete>
+
+</mapper>

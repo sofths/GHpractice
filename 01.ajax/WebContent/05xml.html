@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<!-- jQuery Framework 참조하기 -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script>
+$(function(){
+	$("#mybtn").click(function(){
+		$.ajax({
+			//url:"ajax/xml/03.xml",
+			url:"ajax/xml/04.xml",
+			type:"get",
+			dataType:"xml",
+			catche:false,
+			tiemout:3000,
+			success:function(xml){
+				alert(xml);
+				alert(xml.responseText)
+				//$("#result").append(xml);
+				// 반복되는 태그 단위를 찾아서 each() 함수 사용
+				$(xml).find("subject").each(function(){
+					// 각 개별 요소에 속해 있는 텍스트 데이터 추출
+					var title=$(this).find("title").text();
+					var time=$(this).find("time").text();
+					var teacher=$(this).find("teacher").text();
+					
+					// 출력을 위한 동적 요소의 생성
+					var div=$("div");
+					var p1=$("<p>").html(title);
+					var p2=$("<p>").html(time);
+					var p3=$("<p>").html(teacher);
+					
+					
+					//조립과 출력
+					div.append(p1).append(p2).append(p3);
+					$("#result").append(div);
+					$("#result").append("<hr/>");
+					
+					
+				})
+				
+				
+				
+				
+			},
+			error:function(xhr,textStatus,errorThrown){
+				$("div").html("<div>" + textStatus + " (HTTP-" + xhr.status 
+						+ " / " + errorThrown + ")</div>");
+				//error   404  not found
+			}
+		});
+		
+	});
+});
+</script>
+
+</head>
+<body>
+<input type="button" value="xml데이터 가져오기" id="mybtn" />
+<div class="console" id="result"></div>
+</body>
+</html>
