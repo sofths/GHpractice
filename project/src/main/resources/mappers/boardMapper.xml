@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.human.dao.BoardDAO">
+	<insert id="create">
+		insert into
+		FAQ(titlenum,userid,faqtitle,faqcontent,inquirydate,questiontype)
+		values
+		(seq_faq.nextval,#{userID},#{faqTitle},#{faqContent},sysdate,#{questionType})
+	</insert>
+	<select id="read" resultType="com.human.dto.BoardDTO">
+		select * from FAQ where
+		titleNum=#{titleNum}
+	</select>
+	<update id="update">
+		update FAQ set
+		faqtitle=#{faqtitle},faqcontent=#{faqcontent},questiontype=#{questiontype}  <!-- 여기 부분 쿼리 수정해야함  member email 이랑 FAQ email 이랑 조인 어케함?ㅜㅜ-->
+		where titleNum=#{titleNum}
+	</update>
+	<delete id="delete">
+		delete from FAQ where titleNum=#{titleNum}
+	</delete>
+	<sql id="search">
+		<if test="searchType!=null">
+			<if test="searchType == 't'.toString()"> and faqtitle like '%'|| #{keyword}||'%'</if>
+			<if test="searchType == 'c'.toString()"> and questiontype ='불량품문의' and faqtitle like '%'|| #{keyword}||'%'</if>
+			<if test="searchType == 'w'.toString()"> and questiontype ='상품문의' and faqtitle like '%'|| #{keyword}||'%'</if>
+			<if test="searchType == 'tc'.toString()"> and questiontype = '재고문의' and faqtitle like '%'|| #{keyword}||'%'</if>
+			<if test="searchType == 'cw'.toString()"> and questiontype = '기타문의' and faqtitle like '%'|| #{keyword}||'%'</if>
+			<!-- <if test="searchType == 't'.toString()"> and title like '%'|| #{keyword}||'%' 
+				</if> <if test="searchType == 'c'.toString()"> and content like '%'|| #{keyword}||'%' 
+				</if> <if test="searchType == 'w'.toString()"> and writer like '%'|| #{keyword}||'%' 
+				</if> <if test="searchType == 'tc'.toString()"> and ( title like '%'|| #{keyword}||'%' 
+				OR content like '%'|| #{keyword}||'%') </if> <if test="searchType == 'cw'.toString()"> 
+				and ( content like '%'|| #{keyword}||'%' OR writer like '%'|| #{keyword}||'%') 
+				</if> <if test="searchType == 'tcw'.toString()"> and ( title like '%'|| #{keyword}||'%' 
+				OR content like '%'|| #{keyword}||'%' OR writer like '%'|| #{keyword}||'%') 
+				</if> -->
+		</if>
+	</sql>
+	<select id="listSearch" resultType="com.human.dto.BoardDTO">
+	<![CDATA[select titlenum,userid, faqtitle, faqcontent, inquirydate,questiontype from
+	(select /*+INDEX_DESC(tbl_board,pk_board)*/ 
+	rownum rn,titleNum,userID,faqtitle,faqcontent,inquirydate,questiontype
+	from faq where 1=1  ]]>
+		<include refid="search" />
+	<![CDATA[ and rownum <= #{page} * #{perPageNum} and titlenum > 0 ) 
+	where rn > (#{page} -1) * #{perPageNum} order by titlenum desc]]> 
+	</select>
+	<!-- <select id="listSearch" resultType="com.human.dto.BoardDTO"> <![CDATA[select 
+		bno, title, content, writer, viewcnt, regdate from (select /*+INDEX_DESC(tbl_board,pk_board)*/ 
+		rownum rn,bno,title,content,writer,viewcnt,regdate from tbl_board where 1=1 
+		]]> <include refid="search"/> <![CDATA[ and rownum <= #{page} * #{perPageNum} 
+		and bno > 0 ) where rn > (#{page} -1) * #{perPageNum}]]> </select> -->
+	<select id="listSearchCount" resultType="int">
+	<![CDATA[ select count(titleNum) from FAQ where 1=1 ]]>
+		<include refid="search" />
+	<![CDATA[ and titleNum > 0 order by titlenum desc]]>
+	</select>
+</mapper>
